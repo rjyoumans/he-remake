@@ -2,6 +2,6 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get("/")
+@router.get("/internet")
 def test_internet():
     return {"message": "Internet route is working!"}

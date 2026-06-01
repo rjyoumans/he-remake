@@ -1,16 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>{% block title %}HE Remake{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/auth">Login</a>
-        <a href="/auth/register">Register</a>
-        <a href="/internet">Internet</a>
-    </nav>
-    <hr>
-    {% block content %}{% endblock %}
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <div class="title-left">
+            <h1>HE Remake</h1>
+        </div>
+        <div class="user-nav-right">
+            <a href="#"><i class="fa fa-user"></i> robin0_0hood</a>
+            <a href="#"><i class="fa fa-envelope"></i> E-Mail</a>
+            <a href="#"><i class="fa fa-cog"></i> Settings</a>
+            <a href="/auth/logout"><i class="fa fa-power-off"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="/home/"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fa fa-tasks"></i> Task Manager</a></li>
+                <li><a href="#"><i class="fa fa-folder-open"></i> Software</a></li>
+                <li><a href="#"><i class="fa fa-globe"></i> Internet</a></li>
+                <li><a href="#"><i class="fa fa-book"></i> Log File</a></li>
+                <li><a href="#"><i class="fa fa-desktop"></i> Hardware</a></li>
+                <li><a href="#"><i class="fa fa-flask"></i> University</a></li>
+                <li><a href="#"><i class="fa fa-database"></i> Hacked DB</a></li>
+                <li><a href="#"><i class="fa fa-building"></i> Missions</a></li>
+                <li><a href="#"><i class="fa fa-cogs"></i> Utilities</a></li>
+                <li><a href="#"><i class="fa fa-users"></i> Clan</a></li>
+                <li><a href="#"><i class="fa fa-bars"></i> Ranking</a></li>
+                <li><a href="#"><i class="fa fa-star"></i> Hall of Fame</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
 </body>
 </html>

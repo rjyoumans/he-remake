@@ -34,7 +34,7 @@ def login_user(request: Request, username: str = Form(...), password: str = Form
         return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid username or password"})
     
     request.session["user_id"] = user.id
-    return RedirectResponse("/", status_code=303)
+    return RedirectResponse("/home/", status_code=303)
             
 @router.get("/register", response_class=HTMLResponse)
 def register_form(request: Request):

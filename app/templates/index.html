@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HE Remake</title>
-</head>
-<body>
-    <h1>Welcome to Hacker Experience Remake!</h1>
-</body>
-</html>
+{% extends "layout.html" %}
+
+{% block content %}
+<div id="content">
+    <h1>Control Panel</h1>
+    <p>This is where the main dashboard widgets will go.</p>
+    <ul>
+        <li>Hardware Information</li>
+        <li>General Information</li>
+        <li>News</li>
+        <li>Top 7 Users</li>
+        <li>Round Info</li>
+        <li>FBI Wanted List</li>
+        <li>Game News & Announcements</li>
+    </ul>
+</div>
+{% endblock %}
