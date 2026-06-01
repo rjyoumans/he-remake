@@ -6,3 +6,5 @@ venv/
 test.db
 .idea/
 .vscode/
+*.db
+he_remake.db
