@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}HE Remake{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/auth">Login</a>
+        <a href="/internet">Internet</a>
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+</html>
