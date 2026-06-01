@@ -22,7 +22,16 @@ def get_db():
 @router.get("/login", response_class=HTMLResponse)
 def login_form(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
-                   
+
+@router.post("/login")
+def login_user(username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == username).first()
+    if not user or not verify_password(password, user.hashed_password):
+        return templates.TemplateResponse("login.html", {"request": request, "error": "Invalid username or password"})
+    
+    # Here you would typically create a session or JWT token for the user
+    return RedirectResponse("/", status_code=303)
+            
 @router.get("/register", response_class=HTMLResponse)
 def register_form(request: Request):
     return templates.TemplateResponse("register.html", {"request": request})
