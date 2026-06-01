@@ -1,7 +1,44 @@
-from fastapi import APIRouter, Depends
+from urllib import request
 
-router = APIRouter()
+from fastapi import APIRouter, Request, Form, Depends
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.templating import Jinja2Templates
+from sqlalchemy.orm import Session
 
-@router.post("/")
-def test_auth():
-    return {"message": "Authentication successful"}
+from app.database import SessionLocal
+from app.models import User
+from app.security import hash_password, verify_password
+
+router = APIRouter(prefix="/auth", tags=["auth"])
+templates = Jinja2Templates(directory="app/templates")
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@router.get("/login", response_class=HTMLResponse)
+def login_form(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+                   
+@router.get("/register", response_class=HTMLResponse)
+def register_form(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
+
+@router.post("/register")
+def register_user(username: str = Form(...), email: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+    if db.query(User).filter((User.username == username) | (User.email == email)).first():
+        return templates.TemplateResponse("register.html", {"request": request, "error": "Username or email already exists"})
+    
+    new_user = User(
+        username=username,
+        email=email,
+        hashed_password=hash_password(password)
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return RedirectResponse("/auth/login", status_code=303)
