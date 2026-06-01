@@ -15,10 +15,13 @@ def get_db():
         yield db
     finally:
         db.close()
-
 @router.get("/me")
 def me(request: Request):
-    return {"user_id": request.session.get("user_id")}
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return {"error": "Not authenticated"}
+    
+    return {"user_id": user_id}
 
 @router.get("/login", response_class=HTMLResponse)
 def login_form(request: Request):
@@ -51,4 +54,9 @@ def register_user(request: Request, username: str = Form(...), email: str = Form
     db.commit()
     db.refresh(new_user)
 
+    return RedirectResponse("/auth/login", status_code=303)
+
+@router.get("/logout")
+def logout_user(request: Request):
+    request.session.pop("user_id", None)
     return RedirectResponse("/auth/login", status_code=303)
