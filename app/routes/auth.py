@@ -15,13 +15,6 @@ def get_db():
         yield db
     finally:
         db.close()
-@router.get("/me")
-def me(request: Request):
-    user_id = request.session.get("user_id")
-    if not user_id:
-        return {"error": "Not authenticated"}
-    
-    return {"user_id": user_id}
 
 @router.get("/login", response_class=HTMLResponse)
 def login_form(request: Request):
