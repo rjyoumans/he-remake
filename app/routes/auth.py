@@ -3,8 +3,9 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
-from app.models import User
+from app.models import User, Computer, IPAddress
 from app.security import hash_password, verify_password
+import random
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 templates = Jinja2Templates(directory="app/templates")
@@ -43,8 +44,25 @@ def register_user(request: Request, username: str = Form(...), email: str = Form
         email=email,
         hashed_password=hash_password(password)
     )
+
     db.add(new_user)
+    db.flush()
+
+    new_computer = Computer(
+        user_id=new_user.id
+    )
+
+    db.add(new_computer)
+    db.flush()
+
+    starting_ip = IPAddress(
+        address=f"{random.randint(1,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(1,255)}",
+        computer_id=new_computer.id
+    )
+
+    db.add(starting_ip)
     db.commit()
+
     db.refresh(new_user)
 
     return RedirectResponse("/auth/login", status_code=303)
