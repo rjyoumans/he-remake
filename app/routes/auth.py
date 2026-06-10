@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from app.database import SessionLocal
-from app.models import User, Computer, IPAddress
+from app.models import InstalledSoftware, Software, User, Computer, IPAddress
 from app.security import hash_password, verify_password
 import random
 
@@ -55,6 +55,15 @@ def register_user(request: Request, username: str = Form(...), email: str = Form
     db.add(new_computer)
     db.flush()
 
+    basic_cracker = db.query(Software).filter(Software.name == "Basic Cracker.crc").first()
+
+    installed_software = InstalledSoftware(
+        computer_id=new_computer.id,
+        software_id=basic_cracker.id
+    )
+
+    db.add(installed_software)
+    
     starting_ip = IPAddress(
         address=f"{random.randint(1,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(1,255)}",
         computer_id=new_computer.id

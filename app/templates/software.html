@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div id="content">
+    <h1>Software</h1>
+
+    <h2>Hardware Information</h2>
+    <p>CPU: {{ computer.cpu }}</p>
+    <p>RAM: {{ computer.ram }}</p>
+    <p>Storage: {{ computer.storage }} MB</p>
+    <p>Internet Speed: {{ computer.internet_speed }}</p>
+
+    <h2>Installed Software</h2>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Software Name</th>
+                <th>Version</th>
+                <th>Size</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Basic Cracker.crc</td>
+                <td>1.0</td>
+                <td>26 MB</td>
+                <td>Info | Run | Delete</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>HDD Usage</h2>
+    <p>26 MB / {{ computer.storage }} MB</p>
+</div>
+{% endblock %}

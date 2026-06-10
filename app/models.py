@@ -28,6 +28,7 @@ class Computer(Base):
 
     user = relationship("User", back_populates="computer")
     ip_addresses = relationship("IPAddress", back_populates="computer", cascade="all, delete-orphan")
+    installed_software = relationship("InstalledSoftware", back_populates="computer", cascade="all, delete-orphan")
 
 class IPAddress(Base):
     __tablename__ = "ip_addresses"
@@ -37,3 +38,24 @@ class IPAddress(Base):
     computer_id = Column(Integer, ForeignKey("computers.id"), nullable=True)
 
     computer = relationship("Computer", back_populates="ip_addresses")
+
+class Software(Base):
+    __tablename__ = "software"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, unique=True, index=True, nullable=False)
+    version = Column(String, default="1.0")
+    size = Column(Integer, nullable=False)
+    software_type = Column(String, nullable=False)
+
+    installed_on = relationship("InstalledSoftware", back_populates="software", cascade="all, delete-orphan")
+
+class InstalledSoftware(Base):
+    __tablename__ = "installed_software"
+
+    id = Column(Integer, primary_key=True, index=True)
+    computer_id = Column(Integer, ForeignKey("computers.id"), nullable=False)
+    software_id = Column(Integer, ForeignKey("software.id"), nullable=False)
+
+    computer = relationship("Computer", back_populates="installed_software")
+    software = relationship("Software", back_populates="installed_on")
