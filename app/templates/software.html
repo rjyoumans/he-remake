@@ -4,11 +4,6 @@
 <div id="content">
     <h1>Software</h1>
 
-    <h2>Hardware Information</h2>
-    <p>CPU: {{ computer.cpu }}</p>
-    <p>RAM: {{ computer.ram }}</p>
-    <p>Storage: {{ computer.storage }} MB</p>
-    <p>Internet Speed: {{ computer.internet_speed }}</p>
 
     <h2>Installed Software</h2>
 
@@ -22,12 +17,14 @@
             </tr>
         </thead>
         <tbody>
+            {% for installed in installed_software %}
             <tr>
-                <td>Basic Cracker.crc</td>
-                <td>1.0</td>
-                <td>26 MB</td>
+                <td>{{ installed.software.name }}</td>
+                <td>{{ installed.software.version }}</td>
+                <td>{{ installed.software.size }} MB</td>
                 <td>Info | Run | Delete</td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 
