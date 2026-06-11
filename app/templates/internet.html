@@ -5,12 +5,99 @@
 
 <form method="get">
     <label>IP Address:</label>
-    <input type="text" name="ip" placeholder="1.2.3.4">
+    <input type="text" name="ip" placeholder="1.2.3.4" value="{{ ip or '' }}">
     <button type="submit">Go</button>
 </form>
 
+{% if server %}
+<div class="panel">
+    <div class="server-tabs">
+        {% if logged_in %}
+            <a href="/internet/?ip={{ server.ip_address }}">Logs</a>
+            <a href="/internet/?ip={{ server.ip_address }}&tab=software">Software</a>
+            <a href="/internet/logout?ip={{ server.ip_address }}">Logout</a>
+        {% else %}
+            <a href="/internet/?ip={{ server.ip_address }}">Index</a>
+            <a href="/internet/?ip={{ server.ip_address }}&tab=login">Login</a>
+            <a href="/internet/?ip={{ server.ip_address }}&tab=hack">Hack</a>
+        {% endif %}
+    </div>
+
+    <h2>Server {{ server.ip_address }} is online</h2>
+
+    {% if tab == "login" %}
+        <h3>Login</h3>
+
+        <form method="post" action="/internet/login" class="login-form">
+            <input type="hidden" name="ip" value="{{ server.ip_address }}">
+
+            <div>
+                <label>Username:</label>
+                <input type="text" name="username">
+            </div>
+
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password">
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+    {% elif tab == "software" and logged_in %}
+        <h3>Software</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Software Name</th>
+                    <th>Version</th>
+                    <th>Size</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for software in available_software %}
+                <tr>
+                    <td>{{ software.name }}</td>
+                    <td>{{ software.version }}</td>
+                    <td>{{ software.size }} MB</td>
+                    <td>
+                        <form method="post" action="/internet/download">
+                            <input type="hidden" name="ip" value="{{ server.ip_address }}">
+                            <input type="hidden" name="software_id" value="{{ software.id }}">
+                            <button type="submit">Download</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    {% elif tab == "hack" %}
+        <h3>Hack</h3>
+        <p>Hack tools are not available yet.</p>
+
+    {% else %}
+        {% if logged_in %}
+            <h3>Logs</h3>
+            <p>{{ server.name }} doesn't record logs.</p>
+        {% else %}
+            <h3>{{ server.name }}</h3>
+            <pre>{{ server.description }}</pre>
+        {% endif %}
+    {% endif %}
+</div>
+
+{% elif ip %}
+<div class="panel">
+    <p>Server not found.</p>
+</div>
+{% else %}
 <div class="panel">
     <h2>Index</h2>
     <p>Enter an IP address to connect to a server.</p>
 </div>
+{% endif %}
+
 {% endblock %}

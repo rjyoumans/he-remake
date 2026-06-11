@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -59,3 +59,14 @@ class InstalledSoftware(Base):
 
     computer = relationship("Computer", back_populates="installed_software")
     software = relationship("Software", back_populates="installed_on")
+
+class Server(Base):
+    __tablename__ = "servers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    ip_address = Column(String, unique=True, index=True, nullable=False)
+    name = Column(String, nullable=False)
+    description = Column(Text)
+    server_type = Column(String, default="npc")
+    username = Column(String)
+    password = Column(String)
