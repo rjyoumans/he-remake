@@ -47,6 +47,14 @@
     {% elif tab == "software" and logged_in %}
         <h3>Software</h3>
 
+        {% if error == "storage" %}
+            <p class="error">Not enough HDD space.</p>
+        {% endif %}
+
+        {% if success == "download" %}
+            <p class="success">Download complete.</p>
+        {% endif %}
+
         <table>
             <thead>
                 <tr>
